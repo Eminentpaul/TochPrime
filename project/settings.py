@@ -29,6 +29,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+# LOGIN SETTINGS 
+AUTH_USER_MODEL = 'user_auth.User'
+
 # Application definition
 
 INBUILT_APPS = [
@@ -37,19 +40,20 @@ INBUILT_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.humanize',
     'django.contrib.staticfiles',
 ]
 
 
 MY_APPS = [
-    'base',
+    'user_auth',
     'store',
     'category',
 ]
 
 
 THIRD_PARTY_APPS = [
-
+    "mathfilters",
 ]
 
 
