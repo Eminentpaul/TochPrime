@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import get_list_or_404, get_object_or_404
 from .models import Product, Product_Image
+from cart.utils import _cart_id
 
 # Create your views here.
 
@@ -8,7 +9,6 @@ from .models import Product, Product_Image
 def home(request):
     products = Product.objects.all()
     product_images = [Product_Image.objects.filter(product = product)[0] for product in products]
-
 
     context = {
         'products': products, 
@@ -25,9 +25,6 @@ def product_detail(request, slug):
     sizes = product.size.split(',')
     product_sizes = [size.strip() for size in sizes]
 
-    discount_price = product.price - (product.percent_off/100 * product.price)
-    discount_price = round(discount_price, 2)
-
 
     context = {
         'product': product,
@@ -35,6 +32,6 @@ def product_detail(request, slug):
         'product_sizes': product_sizes, 
         'product_images': product.product_image.all(),
         'product_main_images': product.product_image.all()[0],
-        'discount_price': discount_price,
+
     }
     return render(request, 'store/shop-single.html', context)

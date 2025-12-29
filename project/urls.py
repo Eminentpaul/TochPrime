@@ -9,8 +9,9 @@ urlpatterns = [
 
 
     # My Aps Urls 
-    path('user', include('user_auth.urls')),
+    path('user/', include('user_auth.urls')),
     path('', include('store.urls')),
+    path('cart/', include('cart.urls')),
 ]
 
 urlpatterns.append(re_path(f'^{settings.MEDIA_URL.lstrip("/")}(?P<path>.*)$', mediaserve, {'document_root': settings.MEDIA_ROOT}))

@@ -62,93 +62,97 @@
                             </div>
                             {% if product.percent_off %}
                                 <div class="shop-single-price">
-                                    <del>N{{product.price | intcomma}}</del>
-                                    <span class="amount">{{discount_price | intcomma}}</span>
+                                    <del>N{{product.amount | intcomma}}</del>
+                                    <span class="amount">{{product.get_amount | intcomma}}</span>
                                     <span class="discount-percentage">{{product.percent_off}}% Off</span>
                                 </div>
                             {% else %}
                                 <div class="shop-single-price">
                                     {% comment %} <del>$690</del> {% endcomment %}
-                                    <span class="amount">N{{product.price | intcomma}}</span>
+                                    <span class="amount">N{{product.get_amount | intcomma}}</span>
                                     <span class="discount-percentage">{{product.percent_off}}% Off</span>
                                 </div>
                             {% endif %}
                             <p class="mb-3">
                                 {{product.description | truncatechars:200}}
                             </p>
-                            <div class="shop-single-cs">
-                                <div class="row">
-                                    {% comment %} <div class="col-md-3 col-lg-4 col-xl-3">
-                                        <div class="shop-single-size">
-                                            <h6>Quantity</h6>
-                                            <div class="shop-cart-qty">
-                                                <button class="minus-btn"><i class="fal fa-minus"></i></button>
-                                                <input class="quantity" type="text" value="1" disabled="">
-                                                <button class="plus-btn"><i class="fal fa-plus"></i></button>
+                            <form action="{% url "add_to_cart" product.slug %}" method='post'>
+                                {% csrf_token %}
+                                <div class="shop-single-cs">
+                                    <div class="row">
+                                        <div class="col-md-3 col-lg-4 col-xl-3">
+                                            <div class="shop-single-size">
+                                                <h6>Quantity</h6>
+                                                <div class="shop-cart-qty">
+                                                    <button class="minus-btn"><i class="fal fa-minus"></i></button>
+                                                    <input name='quantity' class="quantity" type="text" value="1" >
+                                                    <button class="plus-btn"><i class="fal fa-plus"></i></button>
+                                                </div>
+                                        </div>
+                                        </div> 
+                                        <div class="col-md-3 col-lg-4 col-xl-3">
+                                            <div class="shop-single-size">
+                                                <h6>Size</h6>
+                                            <select name="size" class="select" required>
+                                                    <option value="" >Choose Size</option>
+                                                    {% for size  in product_sizes %}
+                                                        <option value="{{size}}">{{size}}</option>
+                                                    {% endfor %}
+                                                    
+                                            </select>
                                             </div>
                                         </div>
-                                    </div> {% endcomment %}
-                                    <div class="col-md-3 col-lg-4 col-xl-3">
-                                        <div class="shop-single-size">
-                                            <h6>Size</h6>
-                                           <select class="select" required>
-                                                <option value="" >Choose Size</option>
-                                                {% for size  in product_sizes %}
-                                                    <option value="{{size}}">{{size}}</option>
-                                                {% endfor %}
-                                                
-                                           </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-12 col-xl-6">
-                                        <div class="shop-single-color">
-                                            <h6>Color</h6>
-                                            <ul class="shop-checkbox-list color">
-                                                
-                                                {% for color in product_colors %}
-                                                    <li>
-                                                        <div class="form-check">
-                                                            <input name="p_color" value="{{color}}" class="form-check-input" type="radio" id="{{color}}">
-                                                            <label class="form-check-label" for="{{color}}"><span style="background-color: {{color}}"></span></label>
-                                                        </div>
-                                                    </li>
-                                                {% endfor %}
+                                        <div class="col-md-6 col-lg-12 col-xl-6">
+                                            <div class="shop-single-color">
+                                                <h6>Color</h6>
+                                                <ul class="shop-checkbox-list color">
                                                     
-                                                
-                                            </ul>
+                                                    {% for color in product_colors %}
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input name="p_color" required value="{{color}}" class="form-check-input" type="radio" id="{{color}}">
+                                                                <label class="form-check-label" for="{{color}}"><span style="background-color: {{color}}"></span></label>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                        
+                                                    
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="shop-single-sortinfo">
-                                <ul>
-                                    <li>Stock: <span>Available</span></li>
-                                    {% comment %} <li>SKU: <span>656TYTR</span></li> {% endcomment %}
-                                    <li>Category: <span>{{product.category}}</span></li>
-                                    <li>Sold By: <a href="#">TochPrime Footwears</a></li>
-                                    {% comment %} <li>Tags: <a href="#">Headphone</a>,<a href="#">Bluetooth</a>,<a href="#">Modern</a>,<a href="#">Shop</a></li> {% endcomment %}
-                                </ul>
-                            </div>
-                            <div class="shop-single-action">
-                                <div class="row align-items-center">
-                                    <div class="col-md-6 col-lg-12 col-xl-6">
-                                        <div class="shop-single-btn">
-                                            <a href="#" class="theme-btn"><span class="far fa-shopping-bag"></span>Add To Cart</a>
-                                            <a href="#" class="theme-btn theme-btn2" data-tooltip="tooltip" title="Add To Wishlist"><span class="far fa-heart"></span></a>
-                                            <a href="#" class="theme-btn theme-btn2" data-tooltip="tooltip" title="Add To Compare"><span class="far fa-arrows-repeat"></span></a>
+                                <div class="shop-single-sortinfo">
+                                    <ul>
+                                        <li>Stock: <span>Available</span></li>
+                                        {% comment %} <li>SKU: <span>656TYTR</span></li> {% endcomment %}
+                                        <li>Category: <span>{{product.category}}</span></li>
+                                        <li>Sold By: <a href="#">TochPrime Footwears</a></li>
+                                        {% comment %} <li>Tags: <a href="#">Headphone</a>,<a href="#">Bluetooth</a>,<a href="#">Modern</a>,<a href="#">Shop</a></li> {% endcomment %}
+                                    </ul>
+                                </div>
+                                <div class="shop-single-action">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6 col-lg-12 col-xl-6">
+                                            <div class="shop-single-btn">
+                                                <small class='text-danger d-block'> Please select Size and Color </small>
+                                                <button type='submit' class="theme-btn"><span class="far fa-shopping-bag"></span>Add To Cart</button>
+                                                <a href="#" class="theme-btn theme-btn2" data-tooltip="tooltip" title="Add To Wishlist"><span class="far fa-heart"></span></a>
+                                                <a href="#" class="theme-btn theme-btn2" data-tooltip="tooltip" title="Add To Compare"><span class="far fa-arrows-repeat"></span></a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-12 col-xl-6">
-                                        <div class="shop-single-share">
-                                            <span>Share:</span>
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-x-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                            <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                        <div class="col-md-6 col-lg-12 col-xl-6">
+                                            <div class="shop-single-share">
+                                                <span>Share:</span>
+                                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                                <a href="#"><i class="fab fa-x-twitter"></i></a>
+                                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -59,7 +59,7 @@
                                                     
                                                 {% if image.product == product %}
                                                     <div class="product-img">
-                                                        {% comment %} <span class="type">Trending</span> {% endcomment %}
+                                                        {% if product.percent_off %}<span class="type bg-danger">{{product.percent_off}}% Off</span>{% endif %}
                                                         <a href="{% url 'product_detail' product.slug %}"><img src="{{image.product_image}}" alt=""></a>
                                                         <div class="product-action-wrap">
                                                             <div class="product-action">
@@ -85,10 +85,10 @@
                                                 </div>
                                                 <div class="product-bottom">
                                                     <div class="product-price">
-                                                        <span>N{{product.price | intcomma}}</span>
+                                                        <span>N{{product.get_amount | intcomma}}</span>
                                                     </div>
-                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                        <i class="far fa-shopping-bag"></i>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="View Product">
+                                                        <i class="far fa-eye"></i>
                                                     </button>
                                                 </div>
                                             </div>

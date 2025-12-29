@@ -3,6 +3,7 @@ from user_auth.utils import imageResize
 from category.models import Cateory
 from uuid import uuid4
 from django.utils.safestring import mark_safe
+from user_auth.models import User
 
 # Create your models here.
 
@@ -21,7 +22,7 @@ RATE_LEVEL = (
 class Product(models.Model):
     # vendor = models.ForeignKey()
     name = models.CharField(max_length=250)
-    price = models.DecimalField(default=0.00, decimal_places=2, max_digits=12, max_length=12)
+    amount = models.DecimalField(default=0.00, decimal_places=2, max_digits=12, max_length=12)
     slug = models.SlugField(max_length=300, unique=True)
     description = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Cateory, on_delete=models.CASCADE,related_name="cate_name")
@@ -36,6 +37,14 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name 
+    
+
+    @property
+    def get_amount(self):
+        if self.percent_off:
+            return round(self.amount - (self.amount * self.percent_off/100), 2)
+        else:
+            return round(self.amount, 2)
     
     class Meta:
         ordering = ['-created']
@@ -70,5 +79,3 @@ class Product_Image(models.Model):
 
         
 
-class Cart(models.Model):
-    

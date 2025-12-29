@@ -49,6 +49,7 @@ MY_APPS = [
     'user_auth',
     'store',
     'category',
+    'cart',
 ]
 
 
