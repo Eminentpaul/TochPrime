@@ -12,6 +12,7 @@ urlpatterns = [
     path('user/', include('user_auth.urls')),
     path('', include('store.urls')),
     path('cart/', include('cart.urls')),
+    path('order/', include('order.urls'))
 ]
 
 urlpatterns.append(re_path(f'^{settings.MEDIA_URL.lstrip("/")}(?P<path>.*)$', mediaserve, {'document_root': settings.MEDIA_ROOT}))

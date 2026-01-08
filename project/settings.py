@@ -50,6 +50,7 @@ MY_APPS = [
     'store',
     'category',
     'cart',
+    'order'
 ]
 
 
